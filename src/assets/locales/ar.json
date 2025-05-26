@@ -1,0 +1,91 @@
+{
+  "app": {
+    "title": "نظام الإدارة القانونية"
+  },
+  "menu": {
+    "contact": "جهات الاتصال",
+    "dashboard": "لوحة المعلومات",
+    "settings": "الإعدادات"
+  },
+  "common": {
+    "name": "الاسم",
+    "email": "البريد الإلكتروني",
+    "phone": "الهاتف",
+    "status": "الحالة",
+    "type": "النوع",
+    "responsible": "المسؤول",
+    "action": "الإجراء",
+    "address": "العنوان",
+    "city": "المدينة",
+    "search": "بحث",
+    "create": "إنشاء",
+    "view": "عرض"
+  },
+  "contact": {
+    "title": "إدارة جهات الاتصال",
+    "list": "قائمة جهات الاتصال",
+    "details": "تفاصيل جهة الاتصال",
+    "add": "إضافة جهة اتصال",
+    "edit": "تعديل جهة الاتصال",
+    "team": "أعضاء الفريق",
+    "metrics": "المقاييس",
+    "stages": "المراحل"
+  },
+  "status": {
+    "active": "نشط",
+    "inactive": "غير نشط",
+    "pending": "قيد الانتظار",
+    "in_progress": "قيد التنفيذ",
+    "action_required": "إجراء مطلوب"
+  },
+  "language": {
+    "english": "الإنجليزية",
+    "arabic": "العربية"
+  },
+  "COMMON": {
+    "SEARCH": "البحث",
+    "VIEW": "عرض",
+    "CREATE": "إنشاء",
+    "EDIT": "تعديل"
+  },
+  "CONTACT": {
+    "TITLE": "جهات الاتصال",
+    "HIGHLIGHTS": "المميزة",
+    "TABS": {
+      "ALL": "الجميع (7)",
+      "LEADS": "العملاء المحتملون (2)",
+      "PROSPECTS": "المحتملون (1)",
+      "CLIENTS": "العملاء (1)",
+      "OPPONENTS": "الخصوم (0)",
+      "USERS": "المستخدمون (1)"
+    },
+    "TABLE": {
+      "NAME": "الاسم",
+      "PHONE": "الهاتف",
+      "STAGES": "المراحل",
+      "RESPONSIBLE": "المسؤول",
+      "STATUS": "الحالة"
+    },
+    "TYPE": {
+      "LEAD": "عميل محتمل",
+      "CLIENT": "عميل",
+      "PROSPECT": "محتمل",
+      "OPPONENT": "خصم",
+      "USER": "مستخدم"
+    },
+    "STATUS": {
+      "ACTIVE": "نشط",
+      "PENDING": "في الانتظار",
+      "INACTIVE": "غير نشط"
+    },
+    "DETAILS": {
+      "PHONE": "الهاتف",
+      "ADDRESS": "العنوان",
+      "GOOGLE_MAP": "خريطة جوجل"
+    },
+    "METRICS": {
+      "MATTERS": "القضايا",
+      "PROJECTS": "المشاريع"
+    }
+  }
+}

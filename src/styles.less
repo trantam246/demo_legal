@@ -6,5 +6,29 @@
 // View all variables: https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/components/style/themes/default.less
 
 @primary-color: #348679;
-@border-radius-base: 15px;
-/* You can add global styles to this file, and also import other style files */
+// @border-radius-base: 15px;
+@text-color: #626364; /* You can add global styles to this file, and also import other style files */
+/* Global styles */
+body,
+html,
+* {
+  font-weight: 500;
+}
+
+[dir="rtl"] .next-arrow {
+  transform: scaleX(-1);
+}
+
+[dir="rtl"] .prev-arrow {
+  transform: scaleX(-1);
+}
+
+/* Hoặc áp dụng cho tất cả arrow icons */
+[dir="rtl"] i[nz-icon*="arrow-right"],
+[dir="rtl"] i[nz-icon*="arrow-left"] {
+  transform: scaleX(-1);
+}
+
+button.ant-btn {
+  border-radius: 15px;
+}

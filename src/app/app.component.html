@@ -4,21 +4,44 @@
     <div class="sidebar-logo">
       <a href="https://ng.ant.design/" target="_blank">
         <img src="https://ng.ant.design/assets/img/logo.svg" alt="logo">
-        <h1>Ant Design Of Angular</h1>
+        <h1>{{ 'app.title' | translate }}</h1>
       </a>
     </div>
     <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
       <li nz-menu-item nzMatchRouter>
-        <a routerLink="/contact">Contact</a>
+        <a routerLink="/contact">
+          <span nz-icon nzType="contacts"></span>
+          <span>{{ 'menu.contact' | translate }}</span>
+        </a>
       </li>
     </ul>
   </nz-sider>
   <nz-layout>
     <nz-header>
       <div class="app-header">
+
+        <button (click)="switchLanguage('en')">En</button>
+        <button (click)="switchLanguage('ar')">Ar</button>
+
         <span class="header-trigger" (click)="isCollapsed = !isCollapsed">
           <span class="trigger" nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></span>
         </span>
+
+        <div class="language-selector">
+          <!-- <a nz-dropdown [nzDropdownMenu]="languageMenu" nzTrigger="click">
+            <span class="language-text">{{ currentLanguage.name }}</span>
+            <span nz-icon nzType="down"></span>
+          </a>
+          <nz-dropdown-menu #languageMenu="nzDropdownMenu">
+            <ul nz-menu>
+              <li nz-menu-item *ngFor="let lang of languages" (click)="switchLanguage(lang.code)"
+                [class.selected]="currentLanguage.code === lang.code">
+                <span>{{ lang.name }}</span>
+              </li>
+            </ul>
+          </nz-dropdown-menu> -->
+
+        </div>
       </div>
     </nz-header>
     <nz-content>

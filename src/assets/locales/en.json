@@ -1,0 +1,91 @@
+{
+  "app": {
+    "title": "Legal Management System"
+  },
+  "menu": {
+    "contact": "Contacts",
+    "dashboard": "Dashboard",
+    "settings": "Settings"
+  },
+  "common": {
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "status": "Status",
+    "type": "Type",
+    "responsible": "Responsible",
+    "action": "Action",
+    "address": "Address",
+    "city": "City",
+    "search": "Search",
+    "create": "Create",
+    "view": "View"
+  },
+  "contact": {
+    "title": "Contact Management",
+    "list": "Contact List",
+    "details": "Contact Details",
+    "add": "Add Contact",
+    "edit": "Edit Contact",
+    "team": "Team Members",
+    "metrics": "Metrics",
+    "stages": "Stages"
+  },
+  "status": {
+    "active": "Active",
+    "inactive": "Inactive",
+    "pending": "Pending",
+    "in_progress": "In Progress",
+    "action_required": "Action Required"
+  },
+  "language": {
+    "english": "English",
+    "arabic": "Arabic"
+  },
+  "COMMON": {
+    "SEARCH": "Search",
+    "VIEW": "View",
+    "CREATE": "Create",
+    "EDIT": "Edit"
+  },
+  "CONTACT": {
+    "TITLE": "Contacts",
+    "HIGHLIGHTS": "Highlights",
+    "TABS": {
+      "ALL": "All (7)",
+      "LEADS": "Leads (2)",
+      "PROSPECTS": "Prospects (1)",
+      "CLIENTS": "Clients (1)",
+      "OPPONENTS": "Opponents (0)",
+      "USERS": "Users (1)"
+    },
+    "TABLE": {
+      "NAME": "NAME",
+      "PHONE": "PHONE",
+      "STAGES": "STAGES",
+      "RESPONSIBLE": "RESPONSIBLE",
+      "STATUS": "STATUS"
+    },
+    "TYPE": {
+      "LEAD": "Lead",
+      "CLIENT": "Client",
+      "PROSPECT": "Prospect",
+      "OPPONENT": "Opponent",
+      "USER": "User"
+    },
+    "STATUS": {
+      "ACTIVE": "Active",
+      "PENDING": "Pending",
+      "INACTIVE": "Inactive"
+    },
+    "DETAILS": {
+      "PHONE": "Phone",
+      "ADDRESS": "Address",
+      "GOOGLE_MAP": "Google Map"
+    },
+    "METRICS": {
+      "MATTERS": "Matters",
+      "PROJECTS": "Projects"
+    }
+  }
+}

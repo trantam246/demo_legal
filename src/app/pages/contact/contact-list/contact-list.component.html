@@ -1,6 +1,242 @@
-<p>
-  <button nz-button nzType="primary">Primary Button</button>
-  <button nz-button nzType="default">
-    <a routerLink="1">Contact details</a>
-  </button>
-</p>
+<!-- Header Section -->
+<div nz-row nzAlign="middle" nzJustify="space-between">
+  <div>
+    <button nz-button nz-dropdown nzType="text">
+      {{ 'CONTACT.TITLE' | translate }} <i nz-icon nzType="down"></i>
+    </button>
+  </div>
+  <div nz-row nzAlign="middle">
+    <nz-input-group [nzSuffix]="suffixIconSearch" style="width: 250px; margin-inline-end: 16px; border-radius: 15px;">
+      <input type="text" nz-input [placeholder]="'COMMON.SEARCH' | translate" />
+    </nz-input-group>
+    <ng-template #suffixIconSearch>
+      <i nz-icon nzType="search"></i>
+    </ng-template>
+
+    <div style="margin-inline-end:8px;">
+      <span style="margin-inline-end: 4px;">{{ 'COMMON.VIEW' | translate }}</span>
+      <i nz-icon nzType="appstore" nzTheme="outline"></i>
+    </div>
+
+    <button nz-button nzType="primary">
+      <i nz-icon nzType="plus"></i>{{ 'COMMON.CREATE' | translate }}
+      <i nz-icon nzType="down" style="margin-inline-start: 4px;"></i>
+    </button>
+  </div>
+</div>
+
+<!-- Highlight Switch -->
+<div style="text-align: right; margin: 16px 0;">
+  <span style="margin-inline-end: 8px;">{{ 'CONTACT.HIGHLIGHTS' | translate }}</span>
+  <nz-switch></nz-switch>
+</div>
+
+<!-- Tabs Section -->
+<nz-tabset [nzTabBarExtraContent]="extraTemplate">
+  <nz-tab [nzTitle]="'CONTACT.TABS.ALL' | translate"></nz-tab>
+  <nz-tab [nzTitle]="'CONTACT.TABS.LEADS' | translate" nzSelected></nz-tab>
+  <nz-tab [nzTitle]="'CONTACT.TABS.PROSPECTS' | translate"></nz-tab>
+  <nz-tab [nzTitle]="'CONTACT.TABS.CLIENTS' | translate"></nz-tab>
+  <nz-tab [nzTitle]="'CONTACT.TABS.OPPONENTS' | translate"></nz-tab>
+  <nz-tab [nzTitle]="'CONTACT.TABS.USERS' | translate"></nz-tab>
+</nz-tabset>
+<ng-template #extraTemplate>
+  <div class="icon-container" style="display: flex; gap: 16px;">
+    <!-- Icon 1: Table/Grid view -->
+    <i nz-icon nzType="table" style="font-size: 18px; cursor: pointer;"></i>
+
+    <!-- Icon 2: List view -->
+    <i nz-icon nzType="unordered-list" style="font-size: 18px; cursor: pointer;"></i>
+
+    <!-- Icon 3: Refresh/Sync -->
+    <i nz-icon nzType="sync" style="font-size: 18px; cursor: pointer;"></i>
+
+    <!-- Icon 4: Download/Export -->
+    <i nz-icon nzType="download" style="font-size: 18px; cursor: pointer;"></i>
+  </div>
+</ng-template>
+
+<!-- Table -->
+<nz-table #contactTable [nzData]="contactList" nzSize="small">
+  <thead>
+    <tr>
+      <th nzWidth="15%">
+        <div style="display: flex; align-items: center;">
+          {{ 'CONTACT.TABLE.NAME' | translate }} <i nz-icon nzType="down" style="margin-inline-start: 4px;"></i>
+        </div>
+      </th>
+      <th nzWidth="15%">
+        <div style="display: flex; align-items: center;">
+          {{ 'CONTACT.TABLE.PHONE' | translate }} <i nz-icon nzType="down" style="margin-inline-start: 4px;"></i>
+        </div>
+      </th>
+      <th nzWidth="15%">
+        <div style="display: flex; align-items: center;">
+          {{ 'CONTACT.TABLE.STAGES' | translate }} <i nz-icon nzType="down" style="margin-inline-start: 4px;"></i>
+        </div>
+      </th>
+      <th nzWidth="15%">
+        <div style="display: flex; align-items: center;">
+          {{ 'CONTACT.TABLE.RESPONSIBLE' | translate }} <i nz-icon nzType="down" style="margin-inline-start: 4px;"></i>
+        </div>
+      </th>
+      <th nzWidth="15%">
+        <div style="display: flex; align-items: center;">
+          {{ 'CONTACT.TABLE.STATUS' | translate }} <i nz-icon nzType="down" style="margin-inline-start: 4px;"></i>
+        </div>
+      </th>
+      <th nzWidth="10%">
+        <i nz-icon nzType="appstore" style="display: block; text-align: right;"></i>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- Contact Rows -->
+    <ng-container *ngFor="let contact of contactList">
+      <!-- Contact Row -->
+      <tr [class.selected-row]="contact.expanded">
+        <td>
+          <div nz-row nzAlign="middle">
+            <div style="display: flex; align-items: center">
+              <!-- Avatar -->
+              <nz-avatar [nzText]="getInitials(contact.name)" class="contact-avatar" [ngStyle]="{
+                  'background-color': getAvatarColor(contact.name)
+                }">
+              </nz-avatar>
+
+              <!-- User info -->
+              <div style="margin-inline-start: 12px;">
+                <div style="display: flex; align-items: center;">
+                  <span style="font-weight: 500;">{{ contact.name }}</span>
+                  <nz-tag *ngIf="contact.type" class="type-tag" [ngClass]="'type-' + contact.type.toLowerCase()">
+                    {{ 'CONTACT.TYPE.' + contact.type.toUpperCase() | translate }}
+                  </nz-tag>
+                </div>
+                <div style="color: #999; font-size: 12px;" *ngIf="contact.email">{{ contact.email }}</div>
+              </div>
+            </div>
+          </div>
+        </td>
+        <td>{{ contact.phone }}</td>
+        <td>
+          <div>
+            <div style="display: flex; align-items: center;">
+              <span>{{ contact.stages.type }}</span>
+              <i nz-icon nzType="down" style="margin-inline-start: 4px; font-size: 10px;"></i>
+            </div>
+            <div style="display: flex; gap: 2px; margin-top: 4px;">
+              <ng-container *ngFor="let num of contact.stages.numbers">
+                <div class="stage-pill" [ngClass]="{'stage-completed': isStageComplete(contact, num),
+                  'stage-pending': isStagePending(contact, num),
+                  'stage-todo': isStageToDo(contact, num)
+                }">
+                  {{ num }}
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </td>
+        <td>{{ contact.responsible }}</td>
+        <td>
+          <div *ngIf="contact.status" class="status-indicator" [ngClass]="{
+                 'status-active': contact.status === 'Active',
+                 'status-pending': contact.status === 'Pending'
+               }">
+            <span class="status-dot"></span>
+            {{ 'CONTACT.STATUS.' + contact.status.toUpperCase() | translate }}
+          </div>
+        </td>
+        <td>
+          <div style="display: flex; justify-content: flex-end; align-items: center;">
+            <a nz-dropdown [nzDropdownMenu]="menu" style="margin-inline-end: 8px;">
+              <i nz-icon nzType="ellipsis"></i>
+            </a>
+            <nz-dropdown-menu #menu="nzDropdownMenu">
+              <ul nz-menu nzSelectable style="min-width: 100px;">
+                <li nz-menu-item>
+                  <a [routerLink]="contact.id.toString()">{{ 'COMMON.VIEW' | translate }}</a>
+                </li>
+                <li nz-menu-item>
+                  <a [routerLink]="contact.id.toString()">{{ 'COMMON.EDIT' | translate }}</a>
+                </li>
+              </ul>
+            </nz-dropdown-menu>
+            <i (click)="toggleExpand(contact)" nz-icon [nzType]="contact.expanded ? 'up' : 'down'" class="expand-icon">
+            </i>
+          </div>
+        </td>
+      </tr>
+
+      <!-- Expanded Content -->
+      <tr *ngIf="contact.expanded">
+        <td colspan="6" style="padding: 0;">
+          <div class="expanded-content">
+            <div nz-row [nzGutter]="24">
+              <div nz-col [nzSpan]="4">
+                <h4 class="detail-label">{{ 'CONTACT.DETAILS.PHONE' | translate }}</h4>
+                <p class="detail-value">{{ contact.details.phone }}</p>
+              </div>
+              <div nz-col [nzSpan]="4">
+                <h4 class="detail-label">{{ 'CONTACT.DETAILS.ADDRESS' | translate }}</h4>
+                <a class="google-map-link" *ngIf="contact.details?.googleMapUrl"
+                  href="{{ contact.details.googleMapUrl }}">{{ 'CONTACT.DETAILS.GOOGLE_MAP' | translate }}</a>
+              </div>
+
+              <div nz-col [nzSpan]="16">
+                <ng-container *ngIf="contact.details?.compliance">
+                  <div class="compliance-badges">
+                    <div class="compliance-badge" [ngClass]="{'badge-green': contact.details.compliance.kyc}">
+                      <i nz-icon [nzType]="contact.details.compliance.kyc ? 'check' : 'close'"></i>
+                      KYC
+                    </div>
+                    <div class="compliance-badge" [ngClass]="{'badge-green': contact.details.compliance.cc}">
+                      <i nz-icon [nzType]="contact.details.compliance.cc ? 'check' : 'close'"></i>
+                      CC
+                    </div>
+                    <div class="compliance-badge badge-red">
+                      <i nz-icon nzType="warning"></i>
+                      RA
+                    </div>
+                    <div class="compliance-badge" [ngClass]="{'badge-orange': contact.details.compliance.ag}">
+                      <i nz-icon [nzType]="contact.details.compliance.ag ? 'check' : 'close'"></i>
+                      AG
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+
+            <div class="metrics-container">
+              <div class="metric" *ngIf="contact.details?.metrics?.matters">
+                <strong>{{ contact.details.metrics.matters }}</strong>
+                <span class="metric-label">{{ 'CONTACT.METRICS.MATTERS' | translate }}</span>
+              </div>
+              <div class="metric">|</div>
+              <div class="metric" *ngIf="contact.details?.metrics?.projects">
+                <strong>{{ contact.details.metrics.projects }}</strong>
+                <span class="metric-label">{{ 'CONTACT.METRICS.PROJECTS' | translate }}</span>
+              </div>
+
+              <!-- Team avatars -->
+              <nz-avatar-group *ngIf="contact.details?.team?.length">
+                <ng-container *ngFor="let member of contact.details.team.slice(0, 4)">
+                  <nz-avatar *ngIf="member.avatar" [nzSrc]="member.avatar">
+                  </nz-avatar>
+                  <nz-avatar *ngIf="!member.avatar" nzIcon="user"
+                    [ngStyle]="{'background-color': ['#f56a00', '#7265e6', '#ffbf00', '#00a2ae'][member.id % 4]}">
+                  </nz-avatar>
+                </ng-container>
+                <nz-avatar *ngIf="contact.details.team.length > 4" style="background-color: #ccc"
+                  [nzText]="'+' + (contact.details.team.length - 4)">
+                </nz-avatar>
+                <nz-avatar style="background-color: #fde3cf; color: #f56a00" nzText="+5"></nz-avatar>
+              </nz-avatar-group>
+
+              <i nz-icon nzType="arrow-right" class="next-arrow"></i>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </ng-container>
+  </tbody>
+</nz-table>
