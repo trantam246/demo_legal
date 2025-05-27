@@ -1,14 +1,27 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { NzI18nService, ar_EG, en_US } from 'ng-zorro-antd/i18n';
+import {
+  NzI18nInterface,
+  NzI18nService,
+  ar_EG,
+  en_US,
+} from 'ng-zorro-antd/i18n';
 import { BehaviorSubject, Observable, forkJoin, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 export interface Language {
   code: string;
   name: string;
-  nzLocale: any;
+  nzLocale: NzI18nInterface;
   direction: 'ltr' | 'rtl';
+}
+
+export interface Translations {
+  [key: string]: string | Translations;
+}
+
+export interface TranslationsMap {
+  [languageCode: string]: Translations;
 }
 
 @Injectable({
@@ -35,10 +48,10 @@ export class LanguageService {
   );
   public currentLanguage$ = this.currentLanguageSubject.asObservable();
 
-  private translationsSubject = new BehaviorSubject<{ [key: string]: any }>({});
+  private translationsSubject = new BehaviorSubject<Translations>({});
   public translations$ = this.translationsSubject.asObservable();
 
-  private translations: { [key: string]: any } = {};
+  private translations: TranslationsMap = {};
 
   constructor(private http: HttpClient, private nzI18n: NzI18nService) {
     this.loadAllLanguages().subscribe(() => {
@@ -47,7 +60,7 @@ export class LanguageService {
     });
   }
 
-  private loadAllLanguages(): Observable<any> {
+  private loadAllLanguages(): Observable<Translations[]> {
     const requests = this.languages.map((lang) =>
       this.loadLanguageFile(lang.code)
     );
@@ -55,9 +68,9 @@ export class LanguageService {
     return forkJoin(requests);
   }
 
-  private loadLanguageFile(langCode: string): Observable<any> {
-    return this.http.get(`/assets/locales/${langCode}.json`).pipe(
-      map((translations: any) => {
+  private loadLanguageFile(langCode: string): Observable<Translations> {
+    return this.http.get<Translations>(`/assets/locales/${langCode}.json`).pipe(
+      map((translations: Translations) => {
         this.translations[langCode] = translations;
         return translations;
       }),
@@ -99,10 +112,15 @@ export class LanguageService {
     return this.getNestedTranslation(translations, key) || key;
   }
 
-  private getNestedTranslation(obj: any, path: string): string {
-    return path.split('.').reduce((current, key) => {
-      return current && current[key] !== undefined ? current[key] : null;
-    }, obj);
+  private getNestedTranslation(obj: Translations, path: string): string | null {
+    return path
+      .split('.')
+      .reduce((current: string | Translations | null, key: string) => {
+        if (current && typeof current === 'object' && key in current) {
+          return current[key];
+        }
+        return null;
+      }, obj) as string | null;
   }
 
   private updateDirection(direction: 'ltr' | 'rtl'): void {
@@ -115,12 +133,12 @@ export class LanguageService {
   }
 
   // Method để reload language files nếu cần
-  reloadLanguages(): Observable<any> {
+  reloadLanguages(): Observable<Translations[]> {
     return this.loadAllLanguages();
   }
 
   // Method để thêm translations runtime (nếu cần)
-  addTranslations(langCode: string, translations: any): void {
+  addTranslations(langCode: string, translations: Translations): void {
     if (this.translations[langCode]) {
       this.translations[langCode] = {
         ...this.translations[langCode],
@@ -133,5 +151,33 @@ export class LanguageService {
     if (this.getCurrentLanguage().code === langCode) {
       this.translationsSubject.next(this.translations[langCode]);
     }
+  }
+
+  // Helper method to check if translation key exists
+  hasTranslation(key: string, langCode?: string): boolean {
+    const lang = langCode || this.getCurrentLanguage().code;
+    const translations = this.translations[lang];
+
+    if (!translations) {
+      return false;
+    }
+
+    return this.getNestedTranslation(translations, key) !== null;
+  }
+
+  // Get all translations for current language
+  getCurrentTranslations(): Translations {
+    const currentLang = this.getCurrentLanguage().code;
+    return this.translations[currentLang] || {};
+  }
+
+  // Check if current language is RTL
+  isRTL(): boolean {
+    return this.getCurrentLanguage().direction === 'rtl';
+  }
+
+  // Check if current language is LTR
+  isLTR(): boolean {
+    return this.getCurrentLanguage().direction === 'ltr';
   }
 }

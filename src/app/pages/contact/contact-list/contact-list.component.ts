@@ -1,12 +1,62 @@
 import { Component, OnInit } from '@angular/core';
 
+// Định nghĩa interfaces
+interface TeamMember {
+  id: number;
+  avatar: string;
+}
+
+interface Compliance {
+  kyc: boolean;
+  cc: boolean;
+  ra: boolean;
+  ag: boolean;
+}
+
+interface Metrics {
+  matters: number;
+  projects: number;
+}
+
+interface ContactDetails {
+  phone: string;
+  address: string;
+  city: string;
+  googleMapUrl: string;
+  metrics: Metrics;
+  team: TeamMember[];
+  compliance: Compliance;
+}
+
+interface Stages {
+  type: string;
+  numbers: number[];
+  completed: number[];
+  pending: number[];
+  toDo: number[];
+}
+
+interface Contact {
+  id: number;
+  name: string;
+  email: string;
+  type: 'Lead' | 'Client' | 'Prospect' | 'Opponent' | 'User';
+  phone: string;
+  avatar: string;
+  stages: Stages;
+  responsible: string;
+  status: 'Active' | 'Pending' | 'Inactive';
+  expanded: boolean;
+  details: ContactDetails;
+}
+
 @Component({
   selector: 'app-contact-list',
   templateUrl: './contact-list.component.html',
   styleUrls: ['./contact-list.component.less'],
 })
 export class ContactListComponent implements OnInit {
-  contactList = [
+  contactList: Contact[] = [
     {
       id: 1,
       name: 'Sophia Martin',
@@ -429,11 +479,12 @@ export class ContactListComponent implements OnInit {
       },
     },
   ];
+
   constructor() {}
 
   ngOnInit(): void {}
 
-  toggleExpand(contact: any): void {
+  toggleExpand(contact: Contact): void {
     contact.expanded = !contact.expanded;
   }
 
@@ -442,20 +493,20 @@ export class ContactListComponent implements OnInit {
   }
 
   // Helper functions to handle stages display
-  isStageComplete(contact: any, stageNum: number): boolean {
-    return contact.stages?.completed?.includes(stageNum);
+  isStageComplete(contact: Contact, stageNum: number): boolean {
+    return contact.stages?.completed?.includes(stageNum) ?? false;
   }
 
-  isStagePending(contact: any, stageNum: number): boolean {
-    return contact.stages?.pending?.includes(stageNum);
+  isStagePending(contact: Contact, stageNum: number): boolean {
+    return contact.stages?.pending?.includes(stageNum) ?? false;
   }
 
-  isStageToDo(contact: any, stageNum: number): boolean {
-    return contact.stages?.toDo?.includes(stageNum);
+  isStageToDo(contact: Contact, stageNum: number): boolean {
+    return contact.stages?.toDo?.includes(stageNum) ?? false;
   }
 
   // Function to handle avatar display
-  getExtraAvatarCount(contact: any): number {
+  getExtraAvatarCount(contact: Contact): number {
     const visibleAvatars = 4; // Number of avatars to show before +X
     return contact.details?.team
       ? Math.max(0, contact.details.team.length - visibleAvatars)
@@ -481,7 +532,7 @@ export class ContactListComponent implements OnInit {
     if (!name) return '#1890ff';
 
     // Tạo màu dựa vào tên (có thể điều chỉnh)
-    const colors = [
+    const colors: string[] = [
       '#1890ff',
       '#52c41a',
       '#faad14',
@@ -489,10 +540,46 @@ export class ContactListComponent implements OnInit {
       '#722ed1',
       '#13c2c2',
     ];
-    const hash = name.split('').reduce((acc, char) => {
+    const hash = name.split('').reduce((acc: number, char: string) => {
       return acc + char.charCodeAt(0);
     }, 0);
 
     return colors[hash % colors.length];
+  }
+
+  // Additional helper methods với proper typing
+  getContactById(id: number): Contact | undefined {
+    return this.contactList.find((contact) => contact.id === id);
+  }
+
+  getContactsByType(type: Contact['type']): Contact[] {
+    return this.contactList.filter((contact) => contact.type === type);
+  }
+
+  getContactsByStatus(status: Contact['status']): Contact[] {
+    return this.contactList.filter((contact) => contact.status === status);
+  }
+
+  updateContactStatus(contactId: number, status: Contact['status']): void {
+    const contact = this.getContactById(contactId);
+    if (contact) {
+      contact.status = status;
+    }
+  }
+
+  getTeamMemberCount(contact: Contact): number {
+    return contact.details?.team?.length ?? 0;
+  }
+
+  hasCompletedAllStages(contact: Contact): boolean {
+    return (
+      contact.stages?.completed?.length === contact.stages?.numbers?.length
+    );
+  }
+
+  getStageProgress(contact: Contact): number {
+    if (!contact.stages?.numbers?.length) return 0;
+    const completedCount = contact.stages.completed?.length ?? 0;
+    return (completedCount / contact.stages.numbers.length) * 100;
   }
 }
