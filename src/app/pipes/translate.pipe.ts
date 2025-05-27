@@ -4,7 +4,7 @@ import {
   Pipe,
   PipeTransform,
 } from '@angular/core';
-import isEqual from 'lodash/isEqual';
+import { isEqual } from 'lodash-es';
 import { Subscription } from 'rxjs';
 import {
   InterpolationParams,

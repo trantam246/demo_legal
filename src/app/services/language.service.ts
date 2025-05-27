@@ -1,9 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import find from 'lodash/find';
-import get from 'lodash/get';
-import merge from 'lodash/merge';
-import set from 'lodash/set';
+import { find, get, merge, set } from 'lodash-es';
+
 import {
   ar_EG,
   en_US,
