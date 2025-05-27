@@ -101,15 +101,32 @@ export class LanguageService {
     }
   }
 
-  translate(key: string): string {
+  // ...existing code...
+
+  translate(key: string, params?: { [key: string]: string | number }): string {
     const currentLang = this.getCurrentLanguage().code;
     const translations = this.translations[currentLang];
 
     if (!translations) {
-      return key;
+      return this.interpolate(key, params);
     }
 
-    return this.getNestedTranslation(translations, key) || key;
+    const translatedText = this.getNestedTranslation(translations, key);
+    const result = translatedText || key;
+
+    return this.interpolate(result, params);
+  }
+
+  private interpolate(
+    text: string,
+    params?: { [key: string]: string | number }
+  ): string {
+    if (!params) return text;
+
+    return text.replace(/\{(\w+)\}/g, (match: string, key: string) => {
+      const value = params[key];
+      return value !== undefined ? String(value) : match;
+    });
   }
 
   private getNestedTranslation(obj: Translations, path: string): string | null {
